@@ -1638,7 +1638,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		end
 
 		-- Section
-		function Tab:CreateSection(SectionName,Display)
+		function Tab:CreateSection(SectionName, Display, DefaultHide)
 
 			local SectionValue = {
 				Holder = Rayfield.Holding,
@@ -1664,6 +1664,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			function SectionValue:Set(NewSection)
 				Section.Title.Text = NewSection
 			end
+			
 			if Display then
 				Section._UIPadding_.PaddingBottom = UDim.new(0,0)
 				Section.Holder.Visible = false
@@ -1671,6 +1672,37 @@ function RayfieldLibrary:CreateWindow(Settings)
 				SectionValue.Holder.Parent = Rayfield.Holding
 				Section.Title.ImageButton.Visible = false
 			end
+			
+			if DefaultHide then
+				coroutine.wrap(function()
+					wait()
+					Section._UIPadding_.PaddingBottom = UDim.new(0,0)
+					for _, element in ipairs(Section.Holder:GetChildren()) do
+						if element.ClassName == "Frame" then
+							if element.Name ~= "SectionSpacing" and element.Name ~= "Placeholder" and element.Name ~= 'Topholder' then
+								if element.Name == "SectionTitle" then
+									element.Title.TextTransparency = 1
+								else
+									element.BackgroundTransparency = 1
+									element.UIStroke.Transparency = 1
+									element.Title.TextTransparency = 1
+								end
+								
+								for _, child in ipairs(element:GetChildren()) do
+									if child.ClassName == "Frame" then
+										child.Visible = false
+									end
+								end
+							end
+							element.Visible = false
+						end
+					end
+					Section.Title.ImageButton.Rotation = 180
+					SectionValue.Open = false
+				end)()
+			end
+			
+			
 			Section.Title.ImageButton.MouseButton1Down:Connect(function()
 				if Debounce then return end
 				if SectionValue.Open then
