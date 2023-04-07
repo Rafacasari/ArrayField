@@ -1753,7 +1753,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		end
 
 		-- Label
-		function Tab:CreateLabel(LabelText,SectionParent)
+		function Tab:CreateLabel(LabelText, SectionParent)
 			local LabelValue = {}
 
 			local Label = Elements.Template.Label:Clone()
@@ -1789,12 +1789,14 @@ function RayfieldLibrary:CreateWindow(Settings)
 		end
 
 		-- Paragraph
-		function Tab:CreateParagraph(ParagraphSettings,SectionParent)
+		function Tab:CreateParagraph(ParagraphSettings, SectionParent)
 			local ParagraphValue = {}
 
 			local Paragraph = Elements.Template.Paragraph:Clone()
 			Paragraph.Title.Text = ParagraphSettings.Title
+			Paragraph.Title.RichText = true 
 			Paragraph.Content.Text = ParagraphSettings.Content
+			Paragraph.Content.RichText = true
 			Paragraph.Visible = true
 
 			Tab.Elements[ParagraphSettings.Title] = {
@@ -1803,7 +1805,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 				element = Paragraph
 			}
 
-			if SectionParent or ParagraphSettings.SectionParent.Holder then
+			if SectionParent or (ParagraphSettings.SectionParent and ParagraphSettings.SectionParent.Holder) then
 				Paragraph.Parent = SectionParent.Holder or ParagraphSettings.SectionParent.Holder
 			else
 				Paragraph.Parent = TabPage
