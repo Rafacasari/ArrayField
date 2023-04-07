@@ -115,6 +115,7 @@ local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local LocalPlayer = game:GetService('Players').LocalPlayer
+local TextService = game:GetService("TextService")
 
 -- Interface Management
 local Rayfield = game:GetObjects("rbxassetid://11637506633")[1]
@@ -1808,9 +1809,10 @@ function RayfieldLibrary:CreateWindow(Settings)
 				Paragraph.Parent = TabPage
 			end
 
-			Paragraph.Content.Size = UDim2.new(0, 438, 0, Paragraph.Content.TextBounds.Y)
+			local textSize = TextService:GetTextSize(Paragraph.Content.Text, Paragraph.Content.TextSize, Paragraph.Content.Font, Vector2.new(math.huge, math.huge))
+			Paragraph.Content.Size = UDim2.new(0, 438, 0, textSize.Y)
 			--Paragraph.Content.Position = UDim2.new(0,465, 0,76)
-			Paragraph.Size = UDim2.new(0,465, 0, Paragraph.Content.TextBounds.Y + 40)
+			Paragraph.Size = UDim2.new(0,465, 0, textSize.Y + 40)
 
 			Paragraph.BackgroundTransparency = 1
 			Paragraph.UIStroke.Transparency = 1
@@ -1828,6 +1830,11 @@ function RayfieldLibrary:CreateWindow(Settings)
 			function ParagraphValue:Set(NewParagraphSettings)
 				Paragraph.Title.Text = NewParagraphSettings.Title
 				Paragraph.Content.Text = NewParagraphSettings.Content
+				
+				local textSize = TextService:GetTextSize(Paragraph.Content.Text, Paragraph.Content.TextSize, Paragraph.Content.Font, Vector2.new(math.huge, math.huge))
+				Paragraph.Content.Size = UDim2.new(0, 438, 0, textSize.Y)
+				--Paragraph.Content.Position = UDim2.new(0,465, 0,76)
+				Paragraph.Size = UDim2.new(0,465, 0, textSize.Y + 40)
 			end
 
 			return ParagraphValue
