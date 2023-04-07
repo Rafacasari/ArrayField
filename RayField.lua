@@ -3321,9 +3321,7 @@ end
 
 
 function RayfieldLibrary:SaveConfiguration()
-	pcall(function()
-		SaveConfiguration()
-	end)
+	SaveConfiguration()
 end
 
 if not getgenv().DisableArrayfieldAutoLoad then
