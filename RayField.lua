@@ -1401,7 +1401,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 	local FirstTab = false
 	RayFieldQuality.Window = {Tabs = {}}
 	local Window = RayFieldQuality.Window
-	function Window:CreateTab(Name,Image)
+	function Window:CreateTab(Name, Image)
 		Window.Tabs[Name]={Elements = {}}
 		local Tab = Window.Tabs[Name]
 		local SDone = false
@@ -1540,7 +1540,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 
 		-- Button
 		function Tab:CreateButton(ButtonSettings)
-			local ButtonValue = {Locked = false}
+			local ButtonValue = {Locked = false, Disabled = false}
 
 			local Button = Elements.Template.Button:Clone()
 			ButtonValue.Button = Button
@@ -1567,7 +1567,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			TweenService:Create(Button.Title, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()	
 
 			Button.Interact.MouseButton1Click:Connect(function()
-				if ButtonValue.Locked then return end
+				if ButtonValue.Locked or ButtonValue.Disabled then return end
 				local Success, Response = pcall(ButtonSettings.Callback)
 				if not Success then
 					TweenService:Create(Button, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
@@ -1620,6 +1620,22 @@ function RayfieldLibrary:CreateWindow(Settings)
 				if not ButtonValue.Locked then return end --no icon bug
 				TweenService:Create(Button.Lock.Reason.Icon,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{ImageTransparency = 0}):Play()
 			end
+			
+			function ButtonValue:Disable(Reason)
+				if ButtonValue.Disabled then return end
+				ButtonValue.Disabled = true
+				Button.Lock.Reason.Text = Reason or 'Disabled'
+				TweenService:Create(Button.Lock,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{BackgroundTransparency = 0}):Play()
+				TweenService:Create(Button.Lock.Reason,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{TextTransparency = 0}):Play()
+			end
+			
+			function ButtonValue:Enable()
+				if not ButtonValue.Disabled then return end
+				ButtonValue.Disabled = false	
+				TweenService:Create(Button.Lock,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{BackgroundTransparency = 1}):Play()
+				TweenService:Create(Button.Lock.Reason,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{TextTransparency = 1}):Play()
+			end
+			
 			function ButtonValue:Unlock()
 				if not ButtonValue.Locked then return end
 				ButtonValue.Locked = false
