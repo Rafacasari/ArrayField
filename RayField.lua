@@ -789,7 +789,6 @@ function Hide()
 			for _, element in ipairs(tab:GetChildren()) do
 				if element.ClassName == "Frame" then
 					if element.Name ~= "SectionSpacing" and element.Name ~= "Placeholder" then
-						print(element)
 						if element:FindFirstChild('Holder') then
 							TweenService:Create(element, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
 							TweenService:Create(element.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
@@ -3183,7 +3182,6 @@ function RayfieldLibrary:CreateWindow(Settings)
 	TweenService:Create(Topbar.Hide, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageTransparency = 0.8}):Play()
 	wait(0.3)
 	function Window:Prompt(PromptSettings)
-		print(RayFieldQuality)
 		local PromptUI = Prompt.Prompt
 		Prompt.Visible = true
 		Prompt.BackgroundTransparency = 1
@@ -3206,7 +3204,6 @@ function RayfieldLibrary:CreateWindow(Settings)
 
 		if PromptSettings.Actions then
 			for name,info in pairs(PromptSettings.Actions) do
-				print(info)
 				local Button = PromptUI.Buttons.Template:Clone()
 				Button.TextLabel.Text = info.Name
 				Button.Interact.MouseButton1Up:Connect(function()
