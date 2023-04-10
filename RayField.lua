@@ -3315,6 +3315,15 @@ Topbar.Hide.MouseButton1Click:Connect(function()
 	end
 end)
 
+Topbar.Theme.MouseButton1Click:Connect(function()
+	if Debounce then return end
+	if SelectedTheme == Rayfield.Theme.Default then
+		ChangeTheme("Light")
+	else
+		ChangeTheme("Default")
+	end
+end)
+
 UserInputService.InputBegan:Connect(function(input, processed)
 	if (input.KeyCode == Enum.KeyCode.RightShift and not processed) then
 		if Debounce then return end
