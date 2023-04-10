@@ -1664,7 +1664,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		end
 
 		-- Section
-		function Tab:CreateSection(SectionName, Display, DefaultHide)
+		function Tab:CreateSection(SectionName, Display, DefaultHide, Icon)
 
 			local SectionValue = {
 				Holder = Rayfield.Holding,
@@ -1683,6 +1683,15 @@ function RayfieldLibrary:CreateWindow(Settings)
 				sectionholder = Section.Holder,
 				element = Section
 			}
+			
+			if not Icon then 
+				Section.Icon.Visible = false
+				Section.Title.Position = UDim2.new(0, 10, 0, 8)
+			else
+				Section.Icon.Image = "rbxassetid://" .. tostring(Icon)
+				Section.Icon.Visible = true
+				Section.Title.Position = UDim2.new(0, 35, 0, 8)
+			end
 
 			Section.Title.TextTransparency = 1
 			TweenService:Create(Section.Title, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
@@ -1692,7 +1701,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			end
 			
 			if Display then
-				Section._UIPadding_.PaddingBottom = UDim.new(0,0)
+				Section._UIPadding_.PaddingBottom = UDim.new(0,4)
 				Section.Holder.Visible = false
 				Section.BackgroundTransparency = 1
 				SectionValue.Holder.Parent = Rayfield.Holding
@@ -1702,7 +1711,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			if DefaultHide then
 				coroutine.wrap(function()
 					wait()
-					Section._UIPadding_.PaddingBottom = UDim.new(0,0)
+					Section._UIPadding_.PaddingBottom = UDim.new(0,4)
 					for _, element in ipairs(Section.Holder:GetChildren()) do
 						if element.ClassName == "Frame" then
 							if element.Name ~= "SectionSpacing" and element.Name ~= "Placeholder" and element.Name ~= 'Topholder' then
@@ -1733,7 +1742,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 				if SectionValue.Open then
 					--Section.Holder.Visible = true
 					Debounce = true
-					TweenService:Create(Section._UIPadding_, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {PaddingBottom = UDim.new(0,0)}):Play()
+					TweenService:Create(Section._UIPadding_, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {PaddingBottom = UDim.new(0,4)}):Play()
 					for _, element in ipairs(Section.Holder:GetChildren()) do
 						if element.ClassName == "Frame" then
 							if element.Name ~= "SectionSpacing" and element.Name ~= "Placeholder" and element.Name ~= 'Topholder' then
