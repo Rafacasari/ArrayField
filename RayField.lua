@@ -1110,10 +1110,17 @@ function RayfieldLibrary:CreateWindow(Settings)
 	Main.Shadow.Image.ImageTransparency = 1
 	LoadingFrame.Version.TextTransparency = 1
 	LoadingFrame.Title.Text = Settings.LoadingTitle or "Arrayfield Interface Suite"
-	LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "by Sirius | Meta"
+	LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "by Sirius | Meta | Rafa"
 	if Settings.LoadingTitle ~= "Arrayfield Interface Suite" then
 		LoadingFrame.Version.Text = "Arrayfield UI"
 	end
+	
+	if Settings.OldTabLayout then
+	
+	else
+		
+	end
+	
 	Topbar.Visible = false
 	Elements.Visible = false
 	LoadingFrame.Visible = true
@@ -3317,7 +3324,7 @@ end)
 
 Topbar.Theme.MouseButton1Click:Connect(function()
 	if Debounce then return end
-	if SelectedTheme == Rayfield.Theme.Default then
+	if SelectedTheme == RayfieldLibrary.Theme.Default then
 		ChangeTheme("Light")
 	else
 		ChangeTheme("Default")
