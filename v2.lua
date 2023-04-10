@@ -1118,7 +1118,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		Elements.Position = UDim2.new(0.5, 0, 0.5, 45)
 		
 		Topbar.Type.Visible = false
-		Topbar.Title.Position = UDim2.new(0, 10, 0.5, 0)
+		Topbar.Title.Position = UDim2.new(0, 15, 0.5, 0)
 	else
 		TopList.Visible = false
 		Elements.Size = UDim2.new(1, 0,0, 409)
