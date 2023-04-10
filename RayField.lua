@@ -115,17 +115,20 @@ local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local LocalPlayer = game:GetService('Players').LocalPlayer
-local ContentProvider = game:GetService("ContentProvider")
 -- local TextService = game:GetService("TextService")
 
 -- Interface Management
-local Rayfield = game:GetObjects("rbxassetid://13067385695")[1]
+local Rayfield = game:GetObjects("rbxassetid://11637506633")[1]
 
--- pcall(function()
--- _G.LastRayField.Name = 'Old Arrayfield'
--- _G.LastRayField.Enabled = false
--- end)
+--studio
+if game["Run Service"]:IsStudio() then
+	function gethui() return Rayfield end local http_request = nil local syn = {protect_gui = false,request = false,}local http = nil function writefile(tt,t,ttt)end function isfolder(t)end function makefolder(t)end function isfile(r)end function readfile(t)end
+end
 
+pcall(function()
+_G.LastRayField.Name = 'Old Arrayfield'
+_G.LastRayField.Enabled = false
+end)
 local ParentObject = function(Gui)
     local success, failure = pcall(function()
         if get_hidden_gui or gethui then
@@ -141,7 +144,7 @@ local ParentObject = function(Gui)
     if not success and failure then
         Gui.Parent = LocalPlayer:FindFirstChildWhichIsA("PlayerGui")
     end
-	-- _G.LastRayField = Rayfield
+	_G.LastRayField = Rayfield
 end
 ParentObject(Rayfield)
 
@@ -1107,17 +1110,10 @@ function RayfieldLibrary:CreateWindow(Settings)
 	Main.Shadow.Image.ImageTransparency = 1
 	LoadingFrame.Version.TextTransparency = 1
 	LoadingFrame.Title.Text = Settings.LoadingTitle or "Arrayfield Interface Suite"
-	LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "by Sirius | Meta | Rafa"
+	LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "by Sirius | Meta"
 	if Settings.LoadingTitle ~= "Arrayfield Interface Suite" then
 		LoadingFrame.Version.Text = "Arrayfield UI"
 	end
-	
-	if Settings.OldTabLayout then
-	
-	else
-		
-	end
-	
 	Topbar.Visible = false
 	Elements.Visible = false
 	LoadingFrame.Visible = true
@@ -1720,7 +1716,8 @@ function RayfieldLibrary:CreateWindow(Settings)
 					SectionValue.Open = false
 				end)()
 			end
-				
+			
+			
 			Section.Title.ImageButton.MouseButton1Down:Connect(function()
 				if Debounce then return end
 				if SectionValue.Open then
@@ -3318,15 +3315,6 @@ Topbar.Hide.MouseButton1Click:Connect(function()
 	end
 end)
 
-Topbar.Theme.MouseButton1Click:Connect(function()
-	if Debounce then return end
-	if SelectedTheme == RayfieldLibrary.Theme.Default then
-		ChangeTheme("Light")
-	else
-		ChangeTheme("Default")
-	end
-end)
-
 UserInputService.InputBegan:Connect(function(input, processed)
 	if (input.KeyCode == Enum.KeyCode.RightShift and not processed) then
 		if Debounce then return end
@@ -3376,6 +3364,7 @@ function RayfieldLibrary:LoadConfiguration()
 	end
 end
 
+
 function RayfieldLibrary:SaveConfiguration()
 	SaveConfiguration()
 end
@@ -3384,5 +3373,4 @@ if not getgenv().DisableArrayfieldAutoLoad then
 	task.delay(9, RayfieldLibrary.LoadConfiguration, RayfieldLibrary)
 end
 
-RayfieldLibrary.UI = Rayfield
 return RayfieldLibrary
