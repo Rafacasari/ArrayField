@@ -115,20 +115,17 @@ local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local LocalPlayer = game:GetService('Players').LocalPlayer
+local ContentProvider = game:GetService("ContentProvider")
 -- local TextService = game:GetService("TextService")
 
 -- Interface Management
-local Rayfield = game:GetObjects("rbxassetid://11637506633")[1]
+local Rayfield = game:GetObjects("rbxassetid://13067385695")[1]
 
---studio
-if game["Run Service"]:IsStudio() then
-	function gethui() return Rayfield end local http_request = nil local syn = {protect_gui = false,request = false,}local http = nil function writefile(tt,t,ttt)end function isfolder(t)end function makefolder(t)end function isfile(r)end function readfile(t)end
-end
+-- pcall(function()
+-- _G.LastRayField.Name = 'Old Arrayfield'
+-- _G.LastRayField.Enabled = false
+-- end)
 
-pcall(function()
-_G.LastRayField.Name = 'Old Arrayfield'
-_G.LastRayField.Enabled = false
-end)
 local ParentObject = function(Gui)
     local success, failure = pcall(function()
         if get_hidden_gui or gethui then
@@ -144,7 +141,7 @@ local ParentObject = function(Gui)
     if not success and failure then
         Gui.Parent = LocalPlayer:FindFirstChildWhichIsA("PlayerGui")
     end
-	_G.LastRayField = Rayfield
+	-- _G.LastRayField = Rayfield
 end
 ParentObject(Rayfield)
 
@@ -1723,9 +1720,8 @@ function RayfieldLibrary:CreateWindow(Settings)
 					SectionValue.Open = false
 				end)()
 			end
-			
-			
-			Section.Title.ImageButton.MouseButton1Down:Connect(function()
+				
+			Section.MouseButton1Down:Connect(function()
 				if Debounce then return end
 				if SectionValue.Open then
 					--Section.Holder.Visible = true
@@ -3379,7 +3375,6 @@ function RayfieldLibrary:LoadConfiguration()
 		end)
 	end
 end
-
 
 function RayfieldLibrary:SaveConfiguration()
 	SaveConfiguration()
