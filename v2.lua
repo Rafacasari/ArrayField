@@ -119,7 +119,7 @@ local ContentProvider = game:GetService("ContentProvider")
 -- local TextService = game:GetService("TextService")
 
 -- Interface Management
-local Rayfield = game:GetObjects("rbxassetid://11637506633")[1]
+local Rayfield = game:GetObjects("rbxassetid://13067385695")[1]
 
 -- pcall(function()
 -- _G.LastRayField.Name = 'Old Arrayfield'
@@ -1111,7 +1111,11 @@ function RayfieldLibrary:CreateWindow(Settings)
 	if Settings.LoadingTitle ~= "Arrayfield Interface Suite" then
 		LoadingFrame.Version.Text = "Arrayfield UI"
 	end
-	
+
+	Topbar.Visible = false
+	Elements.Visible = false
+	LoadingFrame.Visible = true
+
 	if Settings.OldTabLayout then
 		TopList.Visible = true
 		Elements.Size = UDim2.new(1, 0, 0, 364)
@@ -1125,11 +1129,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		Elements.Position = UDim2.new(0.5, 0, 0.555, 0)
 	end
 	
-	Topbar.Visible = false
-	Elements.Visible = false
-	LoadingFrame.Visible = true
-
-
+	
 	pcall(function()
 		if not Settings.ConfigurationSaving.FileName then
 			Settings.ConfigurationSaving.FileName = tostring(game.PlaceId)
