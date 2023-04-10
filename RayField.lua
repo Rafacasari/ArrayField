@@ -1721,7 +1721,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 				end)()
 			end
 				
-			Section.MouseButton1Down:Connect(function()
+			Section.Title.ImageButton.MouseButton1Down:Connect(function()
 				if Debounce then return end
 				if SectionValue.Open then
 					--Section.Holder.Visible = true
@@ -3384,4 +3384,5 @@ if not getgenv().DisableArrayfieldAutoLoad then
 	task.delay(9, RayfieldLibrary.LoadConfiguration, RayfieldLibrary)
 end
 
+RayfieldLibrary.UI = Rayfield
 return RayfieldLibrary
