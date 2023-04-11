@@ -10,8 +10,6 @@ Arrays  | Designing + Programming + New Features
 
 ]]
 
-print("Loaded GUI from desktop")
-
 local Release = "Release 1A"
 local NotificationDuration = 6.5
 local RayfieldFolder = "Rayfield"
