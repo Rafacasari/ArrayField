@@ -10,7 +10,7 @@ Arrays  | Designing + Programming + New Features
 
 ]]
 
-
+print("Loaded GUI from desktop")
 
 local Release = "Release 1A"
 local NotificationDuration = 6.5
@@ -29,7 +29,7 @@ local RayfieldLibrary = {
 			Background = Color3.fromRGB(25, 25, 25),
 			Topbar = Color3.fromRGB(34, 34, 34),
 			Shadow = Color3.fromRGB(20, 20, 20),
-
+			
 			NotificationBackground = Color3.fromRGB(20, 20, 20),
 			NotificationActionsBackground = Color3.fromRGB(230, 230, 230),
 
@@ -62,10 +62,10 @@ local RayfieldLibrary = {
 			PlaceholderColor = Color3.fromRGB(178, 178, 178)
 		},
 		Light = {
-			TextFont = "Gotham",  -- Default will use the various font faces used across Rayfield
+			TextFont = "Default",  -- Default will use the various font faces used across Rayfield
 			TextColor = Color3.fromRGB(50, 50, 50), -- i need to make all text 240, 240, 240 and base gray on transparency not color to do this
 
-			Background = Color3.fromRGB(255, 255, 255),
+			Background = Color3.fromRGB(250, 250, 250),
 			Topbar = Color3.fromRGB(217, 217, 217),
 			Shadow = Color3.fromRGB(223, 223, 223),
 
@@ -119,7 +119,7 @@ local ContentProvider = game:GetService("ContentProvider")
 -- local TextService = game:GetService("TextService")
 
 -- Interface Management
-local Rayfield = game:GetObjects("rbxassetid://13068635964")[1]
+local Rayfield = game:GetObjects("rbxassetid://13067385695")[1]
 
 -- pcall(function()
 -- _G.LastRayField.Name = 'Old Arrayfield'
@@ -203,7 +203,7 @@ function ChangeTheme(ThemeName)
 
 	for _, TabPage in ipairs(Elements:GetChildren()) do
 		for _, Element in ipairs(TabPage:GetChildren()) do
-			if Element.ClassName == "Frame" and Element.Name ~= "Placeholder" and Element.Name ~= "SectionSpacing" and Element.Name ~= ""  then
+			if Element.ClassName == "Frame" and Element.Name ~= "Placeholder" and Element.Name ~= "SectionSpacing" and Element.Name ~= "" and Element.Name ~= "SectionTitle" then
 				Element.BackgroundColor3 = SelectedTheme.ElementBackground
 				Element.UIStroke.Color = SelectedTheme.ElementStroke
 			end
@@ -1116,19 +1116,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 	Elements.Visible = false
 	LoadingFrame.Visible = true
 
-	if Settings.OldTabLayout then
-		TopList.Visible = true
-		Elements.Size = UDim2.new(1, 0, 0, 364)
-		Elements.Position = UDim2.new(0.5, 0, 0.5, 45)
-		
-		Topbar.Type.Visible = false
-		Topbar.Title.Position = UDim2.new(0, 15, 0.5, 0)
-	else
-		TopList.Visible = false
-		Elements.Size = UDim2.new(1, 0,0, 409)
-		Elements.Position = UDim2.new(0.5, 0, 0.555, 0)
-	end
-	
+	RayfieldLibrary:ToggleOldTabStyle(Settings.OldTabLayout)	
 	
 	pcall(function()
 		if not Settings.ConfigurationSaving.FileName then
@@ -1412,7 +1400,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 	local FirstTab = false
 	RayFieldQuality.Window = {Tabs = {}}
 	local Window = RayFieldQuality.Window
-	function Window:CreateTab(Name, Image)
+	function Window:CreateTab(Name, Image, AllowColorChange)
 		Window.Tabs[Name]={Elements = {}}
 		local Tab = Window.Tabs[Name]
 		local SDone = false
@@ -1482,7 +1470,9 @@ function RayfieldLibrary:CreateWindow(Settings)
 		wait(0.1)
 		if FirstTab then
 			TopTabButton.BackgroundColor3 = SelectedTheme.TabBackground
-			-- TopTabButton.Image.ImageColor3 = SelectedTheme.TabTextColor
+			if AllowColorChange then
+				TopTabButton.Image.ImageColor3 = SelectedTheme.TabTextColor
+			end
 			TopTabButton.Title.TextColor3 = SelectedTheme.TabTextColor
 			TweenService:Create(TopTabButton, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.7}):Play()
 			TweenService:Create(TopTabButton.Title, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
@@ -1496,7 +1486,9 @@ function RayfieldLibrary:CreateWindow(Settings)
 			FirstTab = Name
 
 			TopTabButton.BackgroundColor3 = SelectedTheme.TabBackgroundSelected
-			-- TopTabButton.Image.ImageColor3 = SelectedTheme.SelectedTabTextColor
+			if AllowColorChange then
+				TopTabButton.Image.ImageColor3 = SelectedTheme.SelectedTabTextColor
+			end
 			TopTabButton.Title.TextColor3 = SelectedTheme.SelectedTabTextColor
 			TweenService:Create(TopTabButton.Shadow, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {ImageTransparency = 0.9}):Play()
 			TweenService:Create(TopTabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
@@ -1518,7 +1510,9 @@ function RayfieldLibrary:CreateWindow(Settings)
 			TweenService:Create(TopTabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
 			TweenService:Create(TopTabButton, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.TabBackgroundSelected}):Play()
 			TweenService:Create(TopTabButton.Title, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextColor3 = SelectedTheme.SelectedTabTextColor}):Play()
-			-- TweenService:Create(TopTabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageColor3 = SelectedTheme.SelectedTabTextColor}):Play()
+			if AllowColorChange then
+				TweenService:Create(TopTabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageColor3 = SelectedTheme.SelectedTabTextColor}):Play()
+			end
 			TweenService:Create(TopTabButton.Shadow, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {ImageTransparency = 0.9}):Play()
 
 			TweenService:Create(SideTabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageTransparency = 0,ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play()
@@ -1528,7 +1522,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 				task.spawn(function()
 					if OtherTabButton.Name ~= "Template" and OtherTabButton.ClassName == "Frame" and OtherTabButton ~= TopTabButton and OtherTabButton.Name ~= "Placeholder" then
 						TweenService:Create(OtherTabButton, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.TabBackground,BackgroundTransparency = .7}):Play()
-						-- TweenService:Create(OtherTabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageColor3 = Color3.fromRGB(240, 240, 240)}):Play()
+						TweenService:Create(OtherTabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageColor3 = Color3.fromRGB(240, 240, 240)}):Play()
 						TweenService:Create(OtherTabButton.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Transparency = 0,Color = Color3.fromRGB(85,85,85)}):Play()
 						TweenService:Create(OtherTabButton.Shadow, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageTransparency = .85,ImageColor3 = Color3.fromRGB(20,20,20)}):Play()
 						TweenService:Create(OtherTabButton.Title, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextColor3 = Color3.fromRGB(240, 240, 240),TextTransparency = .2}):Play()
@@ -1700,6 +1694,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 				Section.Title.Text = NewSection
 			end
 			
+			
 			if Display then
 				Section._UIPadding_.PaddingBottom = UDim.new(0,4)
 				Section.Holder.Visible = false
@@ -1708,7 +1703,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 				Section.Title.ImageButton.Visible = false
 			end
 			
-			if DefaultHide then
+			if DefaultHide and not Display then
 				coroutine.wrap(function()
 					wait()
 					Section._UIPadding_.PaddingBottom = UDim.new(0,4)
@@ -1735,6 +1730,8 @@ function RayfieldLibrary:CreateWindow(Settings)
 					Section.Title.ImageButton.Rotation = 180
 					SectionValue.Open = false
 				end)()
+			elseif not DefaultHide and not Display then
+				Section._UIPadding_.PaddingBottom = UDim.new(0,8)
 			end
 				
 			Section.Title.ImageButton.MouseButton1Down:Connect(function()
@@ -3286,6 +3283,26 @@ function RayfieldLibrary:CreateWindow(Settings)
 end
 
 
+function RayfieldLibrary:ToggleOldTabStyle(oldTabStyle) 
+	if oldTabStyle == nil then oldTabStyle = false end
+	
+	if oldTabStyle then
+		TopList.Visible = true
+		Elements.Size = UDim2.new(1, 0, 0, 364)
+		Elements.Position = UDim2.new(0.5, 0, 0.5, 45)
+		
+		Topbar.Type.Visible = false
+		Topbar.Title.Position = UDim2.new(0, 15, 0.5, 0)
+	else
+		TopList.Visible = false
+		Elements.Size = UDim2.new(1, 0,0, 409)
+		Elements.Position = UDim2.new(0.5, 0, 0.555, 0)
+		
+		Topbar.Type.Visible = true
+		Topbar.Title.Position = UDim2.new(0, 45, 0.5, 0)
+	end
+end
+
 function RayfieldLibrary:Destroy()
 	Rayfield:Destroy()
 end
@@ -3314,10 +3331,10 @@ end)
 Topbar.Type.MouseButton1Click:Connect(function()
 	if Debounce or Minimised then return end
 	if SideBarClosed then
-		Topbar.Type.Image = "rbxassetid://"..6023565894
+		-- Topbar.Type.Image = "rbxassetid://"..6023565894
 		OpenSideBar()
 	else
-		Topbar.Type.Image = "rbxassetid://"..6023565896
+		-- Topbar.Type.Image = "rbxassetid://"..6023565896
 		CloseSideBar()
 	end
 end)
@@ -3334,14 +3351,14 @@ Topbar.Hide.MouseButton1Click:Connect(function()
 	end
 end)
 
-Topbar.Theme.MouseButton1Click:Connect(function()
-	if Debounce then return end
-	if SelectedTheme == RayfieldLibrary.Theme.Default then
-		ChangeTheme("Light")
-	else
-		ChangeTheme("Default")
-	end
-end)
+-- Topbar.Theme.MouseButton1Click:Connect(function()
+	-- if Debounce then return end
+	-- if SelectedTheme == RayfieldLibrary.Theme.Default then
+		-- ChangeTheme("Light")
+	-- else
+		-- ChangeTheme("Default")
+	-- end
+-- end)
 
 UserInputService.InputBegan:Connect(function(input, processed)
 	if (input.KeyCode == Enum.KeyCode.RightShift and not processed) then
