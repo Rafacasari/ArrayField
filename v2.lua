@@ -268,6 +268,7 @@ end
 
 local function SaveConfiguration()
 	if not CEnabled then return end
+	-- print(debug.traceback())
 	local Data = {}
 	for i,v in pairs(RayfieldLibrary.Flags) do
 		if v.Type == "ColorPicker" then
@@ -1732,7 +1733,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 				Section._UIPadding_.PaddingBottom = UDim.new(0,8)
 			end
 				
-			Section.Title.ImageButton.MouseButton1Down:Connect(function()
+			Section.Clickable.MouseButton1Down:Connect(function()
 				if Debounce then return end
 				if SectionValue.Open then
 					--Section.Holder.Visible = true
@@ -1893,13 +1894,16 @@ function RayfieldLibrary:CreateWindow(Settings)
 			function ParagraphValue:Set(NewParagraphSettings)
 				Paragraph.Title.Text = NewParagraphSettings.Title
 				Paragraph.Content.Text = NewParagraphSettings.Content
-				
-				-- local textSize = TextService:GetTextSize(Paragraph.Content.Text, Paragraph.Content.TextSize, Paragraph.Content.Font, Vector2.new(math.huge, math.huge))
-				-- Paragraph.Content.Size = UDim2.new(0, 438, 0, textSize.Y)
-				-- --Paragraph.Content.Position = UDim2.new(0,465, 0,76)
-				-- Paragraph.Size = UDim2.new(0,465, 0, textSize.Y + 40)
 			end
 
+			function ParagraphValue:SetTitle(newTitle)
+				Paragraph.Title.Text = newTitle
+			end
+
+			function ParagraphValue:SetContent(newContent)
+				Paragraph.Content.Text = newContent
+			end
+			
 			return ParagraphValue
 		end
 
@@ -2033,10 +2037,20 @@ function RayfieldLibrary:CreateWindow(Settings)
 				section = DropdownSettings.SectionParent,
 				element = Dropdown
 			}
+			
 			if DropdownSettings.SectionParent then
 				Dropdown.Parent = DropdownSettings.SectionParent.Holder
 			else
 				Dropdown.Parent = TabPage
+			end
+			
+			if DropdownSettings.Icon then 
+				if not string.match(DropdownSettings.Icon, "rbxassetid://") then
+					DropdownSettings.Icon = "rbxassetid://" .. tostring(DropdownSettings.Icon)
+				end
+				Dropdown.Icon.Image = tostring(DropdownSettings.Icon)
+				Dropdown.Icon.Visible = true
+				Dropdown.Title.Position = UDim2.new(0, 50, 0, 22)
 			end
 
 			Dropdown.List.Visible = false
@@ -2687,21 +2701,25 @@ function RayfieldLibrary:CreateWindow(Settings)
 			function ToggleSettings:Destroy()
 				Toggle:Destroy()
 			end
-			function ToggleSettings:Lock(Reason)
+			function ToggleSettings:Lock(Reason, HideLockIcon)
 				if ToggleSettings.Locked then return end
 				ToggleSettings.Locked = true
 				Toggle.Lock.Reason.Text = Reason or 'Locked'
 				TweenService:Create(Toggle.Lock,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{BackgroundTransparency = 0}):Play()
 				TweenService:Create(Toggle.Lock.Reason,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{TextTransparency = 0}):Play()
-				wait(0.2)
-				if not ToggleSettings.Locked then return end --no icon bug
-				TweenService:Create(Toggle.Lock.Reason.Icon,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{ImageTransparency = 0}):Play()
+				if not HideLockIcon then
+					wait(0.2)
+					if not ToggleSettings.Locked then return end --no icon bug
+					TweenService:Create(Toggle.Lock.Reason.Icon,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{ImageTransparency = 0}):Play()
+				end
 			end
 			function ToggleSettings:Unlock()
 				if not ToggleSettings.Locked then return end
 				ToggleSettings.Locked = false
 				wait(0.2)
-				TweenService:Create(Toggle.Lock.Reason.Icon,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{ImageTransparency = 1}):Play()
+				if Toggle.Lock.Reason.Icon.ImageTransparency == 0 then
+					TweenService:Create(Toggle.Lock.Reason.Icon,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{ImageTransparency = 1}):Play()
+				end
 				if ToggleSettings.Locked then return end --no icon bug
 				TweenService:Create(Toggle.Lock,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{BackgroundTransparency = 1}):Play()
 				TweenService:Create(Toggle.Lock.Reason,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{TextTransparency = 1}):Play()
