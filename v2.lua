@@ -1677,7 +1677,8 @@ function RayfieldLibrary:CreateWindow(Settings)
 				element = Section
 			}
 			
-			if not Icon then 
+			Section.Icon.Visible = false
+			if not Icon or Icon == nil then 
 				Section.Icon.Visible = false
 				Section.Title.Position = UDim2.new(0, 10, 0, 8)
 			else
@@ -2307,7 +2308,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			function DropdownSettings:Destroy()
 				Dropdown:Destroy()
 			end
-			function DropdownSettings:Lock(Reason)
+			function DropdownSettings:Lock(Reason, hideIcon)
 				if DropdownSettings.Locked then return end
 				DropdownSettings.Locked = true
 				Debounce = true
@@ -2328,14 +2329,16 @@ function RayfieldLibrary:CreateWindow(Settings)
 				TweenService:Create(Dropdown.Lock,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{BackgroundTransparency = 0}):Play()
 				TweenService:Create(Dropdown.Lock.Reason,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{TextTransparency = 0}):Play()
 				wait(0.2)
-				if not DropdownSettings.Locked then return end --no icon bug
+				if not DropdownSettings.Locked or hideIcon then return end --no icon bug
 				TweenService:Create(Dropdown.Lock.Reason.Icon,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{ImageTransparency = 0}):Play()
 			end
 			function DropdownSettings:Unlock()
 				if not DropdownSettings.Locked then return end
 				DropdownSettings.Locked = false
 				wait(0.2)
-				TweenService:Create(Dropdown.Lock.Reason.Icon,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{ImageTransparency = 1}):Play()
+				if Dropdown.Lock.Reason.Icon.ImageTransparency == 0 then
+					TweenService:Create(Dropdown.Lock.Reason.Icon,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{ImageTransparency = 1}):Play()
+				end
 				if DropdownSettings.Locked then return end --no icon bug
 				TweenService:Create(Dropdown.Lock,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{BackgroundTransparency = 1}):Play()
 				TweenService:Create(Dropdown.Lock.Reason,TweenInfo.new(0.4,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{TextTransparency = 1}):Play()
