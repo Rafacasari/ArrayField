@@ -120,10 +120,10 @@ local ContentProvider = game:GetService("ContentProvider")
 -- Interface Management
 local Rayfield = game:GetObjects("rbxassetid://13067385695")[1]
 
--- pcall(function()
--- _G.LastRayField.Name = 'Old Arrayfield'
--- _G.LastRayField.Enabled = false
--- end)
+pcall(function()
+_G.LastRayField.Name = 'Old Arrayfield'
+_G.LastRayField.Enabled = false
+end)
 
 local ParentObject = function(Gui)
     local success, failure = pcall(function()
@@ -140,7 +140,7 @@ local ParentObject = function(Gui)
     if not success and failure then
         Gui.Parent = LocalPlayer:FindFirstChildWhichIsA("PlayerGui")
     end
-	-- _G.LastRayField = Rayfield
+	_G.LastRayField = Rayfield
 end
 ParentObject(Rayfield)
 
